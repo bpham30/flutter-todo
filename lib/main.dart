@@ -18,26 +18,38 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+//tasks
+class Task {
+  final String name;
+
+  Task({required this.name});
+}
+
 //main screen
 class TaskListScreen extends StatefulWidget {
   const TaskListScreen({super.key});
 
 
   @override
-  _TaskListScreen createState() => _TaskListScreen();
+  _TaskListScreenState createState() => _TaskListScreenState();
 }
 
-class _TaskListScreen extends State<TaskListScreen> {
+
+//state
+class _TaskListScreenState extends State<TaskListScreen> {
   //handle input
   final TextEditingController _input = TextEditingController();
 
-  void _addTask() {
-    final task = _input.text;
-    if (task.isNotEmpty) {
-      //add task to list
-      print(task);
+  //list of tasks
+  final List<Task> _tasks = [];
+
+  //function to add tasks
+  void _addTask(String taskInput) {
+    if (taskInput.isNotEmpty) {
+      _tasks.add(Task(name: taskInput));
       setState(() {
-        //clear input field
+        //clear input
         _input.clear();
       });
     }
@@ -74,15 +86,29 @@ class _TaskListScreen extends State<TaskListScreen> {
                   iconColor: Colors.white,
                 ),
                 //implement add logic
-                onPressed: () => _addTask(), child: const Icon(Icons.add),
+                onPressed: () => _addTask(_input.text), child: const Icon(Icons.add),
               ),
             ],
           ),
           //list of tasks
-          const Expanded(child: Center( child: Text("No Tasks"),),)
+          Expanded(
+            child: _tasks.isEmpty ? (const Center(child: Text('No tasks added yet'))) : 
+            ListView.builder(
+              itemCount: _tasks.length,
+              itemBuilder: (context, index) => _buildTask(index),
+            ),
+          )
         ],
       )),
            
+    );
+  }
+  Widget _buildTask(int index) {
+    return Card(
+      child: ListTile(
+        title: Text(_tasks[index].name),
+       
+      ),
     );
   }
 }
