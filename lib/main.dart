@@ -48,7 +48,6 @@ class _TaskListScreen extends State<TaskListScreen> {
                 //input field
                 child: TextField(
                   decoration: InputDecoration(
-                    
                     hintText: 'Enter your task...',
                   ),
                 ),
@@ -64,6 +63,8 @@ class _TaskListScreen extends State<TaskListScreen> {
               ),
             ],
           ),
+          //list of tasks
+          const Expanded(child: Center( child: Text("No Tasks"),),)
         ],
       )),
            
