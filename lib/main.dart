@@ -28,6 +28,20 @@ class TaskListScreen extends StatefulWidget {
 }
 
 class _TaskListScreen extends State<TaskListScreen> {
+  //handle input
+  final TextEditingController _input = TextEditingController();
+
+  void _addTask() {
+    final task = _input.text;
+    if (task.isNotEmpty) {
+      //add task to list
+      print(task);
+      setState(() {
+        //clear input field
+        _input.clear();
+      });
+    }
+  }
 
 
   @override
@@ -44,10 +58,11 @@ class _TaskListScreen extends State<TaskListScreen> {
         children: [
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 //input field
                 child: TextField(
-                  decoration: InputDecoration(
+                  controller: _input,
+                  decoration: const InputDecoration(
                     hintText: 'Enter your task...',
                   ),
                 ),
@@ -59,7 +74,7 @@ class _TaskListScreen extends State<TaskListScreen> {
                   iconColor: Colors.white,
                 ),
                 //implement add logic
-                onPressed: () {}, child: const Icon(Icons.add),
+                onPressed: () => _addTask(), child: const Icon(Icons.add),
               ),
             ],
           ),
