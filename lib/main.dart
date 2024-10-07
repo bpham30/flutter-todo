@@ -63,6 +63,13 @@ class _TaskListScreenState extends State<TaskListScreen> {
     });
   }
 
+  //handle task delete
+  void _deleteTask(int index) {
+    setState(() {
+      _tasks.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -82,7 +89,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                 child: TextField(
                   controller: _input,
                   decoration: const InputDecoration(
-                    hintText: 'Enter your task...',
+                    hintText: 'Add your task...',
                   ),
                 ),
               ),
@@ -99,7 +106,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
           ),
           //list of tasks
           Expanded(
-            child: _tasks.isEmpty ? (const Center(child: Text('No tasks added yet'))) : 
+            child: _tasks.isEmpty ? (const Center(child: Text('No tasks added yet. Please add one'))) : 
             ListView.builder(
               itemCount: _tasks.length,
   
@@ -122,7 +129,11 @@ class _TaskListScreenState extends State<TaskListScreen> {
         ),
         //strikethrough if completed
         title: Text(_tasks[index].name, style: TextStyle(decoration: _tasks[index].isDone ? TextDecoration.lineThrough : TextDecoration.none),),
-       
+       //delete task btn
+       trailing: IconButton(
+         icon: const Icon(Icons.close ),
+         onPressed: () => _deleteTask(index), color: Colors.red,
+       ),
       ),
     );
   }
