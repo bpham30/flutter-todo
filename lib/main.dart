@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
 //tasks
 class Task {
   final String name;
+  bool isDone = false;
 
   Task({required this.name});
 }
@@ -55,6 +56,12 @@ class _TaskListScreenState extends State<TaskListScreen> {
     }
   }
 
+  //function to handle checkbox and tasks completion
+  void _completeTask(int index) {
+    setState(() {
+      _tasks[index].isDone = !_tasks[index].isDone;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +102,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
             child: _tasks.isEmpty ? (const Center(child: Text('No tasks added yet'))) : 
             ListView.builder(
               itemCount: _tasks.length,
-              itemBuilder: (context, index) => _buildTask(index),
+  
+              //display list by newest task first
+              itemBuilder: (context, index) => _buildTask(_tasks.length - 1 - index),
             ),
           )
         ],
@@ -106,7 +115,13 @@ class _TaskListScreenState extends State<TaskListScreen> {
   Widget _buildTask(int index) {
     return Card(
       child: ListTile(
-        title: Text(_tasks[index].name),
+        //add checkbox for completion
+        leading: Checkbox(
+          value: _tasks[index].isDone,
+          onChanged: (value) { _completeTask(index); },
+        ),
+        //strikethrough if completed
+        title: Text(_tasks[index].name, style: TextStyle(decoration: _tasks[index].isDone ? TextDecoration.lineThrough : TextDecoration.none),),
        
       ),
     );
